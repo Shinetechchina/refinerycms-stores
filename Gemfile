@@ -11,12 +11,18 @@ gem 'refinerycms-i18n', '~> 2.0.2'
 
 # Spree Models and Mailers
 # spree_core >= 1.3.2 requires jquery-rails ~> 2.2.0
-gem 'spree_core',   '~> 1.2.0'
-gem 'spree_promo',  '~> 1.2.0'
+gem 'spree_core',   '1.2.0'
+gem 'spree_promo',  '1.2.0'
 # gem 'spree_sample', '~> 1.2.0'
 # gem 'spree_dash',   '~> 1.2.0'
 
-gem 'rb-readline', :group => 'development'
+gem 'rack-rewrite', '~> 1.0.2'
+
+group :development do
+  gem 'rb-readline'
+  gem 'quiet_assets'
+  gem 'thin'
+end
 
 # Database Configuration
 platforms :jruby do
@@ -35,6 +41,7 @@ end
 group :development, :test do
   gem 'refinerycms-testing', '~> 2.0.10'
   gem 'guard-rspec', '~> 0.7.0'
+  gem 'thin'
 
   platforms :mswin, :mingw do
     gem 'win32console', '~> 1.3.0'

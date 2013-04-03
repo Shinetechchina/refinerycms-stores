@@ -1,3 +1,4 @@
+require 'rack/rewrite'
 require 'spree/core'
 
 module Refinery
@@ -12,10 +13,10 @@ module Refinery
       initializer "register refinerycms_stores plugin" do
         Refinery::Plugin.register do |plugin|
           plugin.name = "refinerycms_stores"
-          plugin.url = "/store/admin" # proc { Refinery::Core::Engine.routes.url_helpers.stores_admin_products_path }
+          plugin.url = proc { Spree::Core::Engine.routes.url_helpers.admin_path }
           plugin.pathname = root
-          plugin.menu_match = /refinery\/stores\/?(products|categories)?/
-          plugin.activity = { :class_name => :'refinery/stores/product' }
+          plugin.menu_match = /store\/admin\/?(products|orders)?/
+          plugin.activity = { :class_name => :'spree/product' }
         end
       end
 
@@ -25,14 +26,19 @@ module Refinery
         # end
 
         ::ApplicationController.send :include, Spree::AuthenticationHelpers
+        ::ApplicationController.send :include, Refinery::AuthenticatedSystem
       end
 
       config.after_initialize do
         Refinery.register_extension(Refinery::Stores)
+        Refinery::Stores::Override.enable
       end
 
       config.to_prepare &method(:activate).to_proc
 
+      config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
+        rewrite %r{/refinery/store/(\w+)}, "/store/admin/$1"
+      end
     end
   end
 end
