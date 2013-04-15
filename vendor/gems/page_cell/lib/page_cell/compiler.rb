@@ -15,11 +15,12 @@ module PageCell
       [:dynamic, "_pcdict[#{name.to_s.inspect}]"]
     end
 
-    def on_pagecell_render(args,n='')
-      t = args.to_s.strip.split(/\s/)
-      name = t.shift
-      args = t.join(' ')
-      [:dynamic, "PageCell::View.render_cell(_pcdict,#{name.to_s.inspect},#{args.inspect})"]
+    def on_pagecell_render(args)
+      #t = args.to_s.strip.split(/\s/)
+      #name = t.shift
+      #args = t.join(' ')
+      args = args.to_s.gsub("&gt;",'>').gsub("&lt;",'<')
+      [:dynamic, "PageCell::View.render_cell(_pcdict,#{args.inspect})"]
     end
 
     def on_pagecell_static(text)
