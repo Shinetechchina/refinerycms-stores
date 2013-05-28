@@ -33,8 +33,8 @@ Refinery::Pages::ContentPresenter.class_eval do
     end.compact.join("\n").html_safe
   end
 
-def bind_view_context(section)
-  section.view_context = self.view_context
-end
+  def bind_view_context(section)
+    section.view_context = self.view_context
+  end
 end
 
