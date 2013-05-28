@@ -26,6 +26,7 @@ Refinery::Pages::ContentPresenter.class_eval do
   attr_accessor :view_context
   def sections_html(can_use_fallback)
     @sections.map do |section|
+      #remove 2.1
       bind_view_context(section)
       check_deprecated_sections(section)
       section.wrapped_html(can_use_fallback)
